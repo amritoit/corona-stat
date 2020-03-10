@@ -1,0 +1,3 @@
+*/__pycache__/*
+/corona-serv.log
+/src/handlers/__pycache__/main_handler.cpython-37.pyc

@@ -3,8 +3,10 @@ import tornado.web
 import random
 from tornado.options import define, options
 import logging
+import os
 from handlers.main_handler import MainHandler
 
+port = int(os.environ.get("PORT", 5000))
 define('port', default=9999, help='run on the given port', type=int)
 
 logging.basicConfig(
@@ -33,7 +35,8 @@ def main():
     )
     application = tornado.web.Application(handlers, **settings)
     http_server = tornado.httpserver.HTTPServer(application)
-    http_server.bind(options.port)
+    port = int(os.environ.get("PORT", options.port))
+    http_server.bind(port)
     http_server.start(1)
     logging.info(random.choice([
         'I won\'t be a rock star. I will be a legend.',

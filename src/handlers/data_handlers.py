@@ -17,22 +17,26 @@ import covid
 import json
 from covid.api import CovId19Data
 
-class MainHandler(tornado.web.RequestHandler):
-
-    api = CovId19Data(force=False)
-
-    def get(self):
-        logging.info("recieved request for get stat")
-        data = self.api.get_history_by_country("india")
-        logging.info(data)
-        self.write(json.dumps(data))
 
 class HistoryHandler(tornado.web.RequestHandler):
 
     api = CovId19Data(force=False)
 
+    def set_default_headers(self):
+        print("setting headers!!!")
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', "GET, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "access-control-allow-origin,authorization,content-type") 
+
     def get(self):
+        self.set_default_headers()
         logging.info("recieved request for get stat")
         data = self.api.get_history_by_country("india")
         logging.info(data)
         self.write(json.dumps(data))
+         
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()

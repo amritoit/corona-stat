@@ -5,8 +5,10 @@ from tornado.options import define, options
 import logging
 import os
 from handlers.main_handler import MainHandler
+from handlers.data_handlers import HistoryHandler
 
-port = int(os.environ.get("PORT", 5000))
+
+
 define('port', default=9999, help='run on the given port', type=int)
 
 logging.basicConfig(
@@ -26,7 +28,8 @@ for handler in logging.getLogger().handlers:  # setting format for all handlers
 def main():
     tornado.options.parse_command_line()
     handlers = [
-        (r"/api/v1/data", MainHandler)
+        (r"/api/v1/data", MainHandler),
+        (r"/api/v1/history", HistoryHandler),
     ]
     settings = dict(
         autoescape=None,  # tornado 2.1 backward compatibility

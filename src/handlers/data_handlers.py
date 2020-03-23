@@ -20,7 +20,7 @@ from covid.api import CovId19Data
 
 class HistoryHandler(tornado.web.RequestHandler):
 
-    api = CovId19Data(force=False)
+    api = CovId19Data(force=True)
 
     def set_default_headers(self):
         print("setting headers!!!")
@@ -30,10 +30,10 @@ class HistoryHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Headers", "access-control-allow-origin,authorization,content-type") 
 
     def get(self):
+        country = self.get_argument('country', 'india');
+        logging.info("recieved request for get stat, country-{}".format(country))
+        data = self.api.get_history_by_country(country)
         self.set_default_headers()
-        logging.info("recieved request for get stat")
-        data = self.api.get_history_by_country("india")
-        logging.info(data)
         self.write(json.dumps(data))
          
     def options(self):

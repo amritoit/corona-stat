@@ -6,6 +6,7 @@ import logging
 import os
 from handlers.main_handler import MainHandler
 from handlers.data_handlers import HistoryHandler
+from handlers.data_handlers import CountryListHandler
 
 
 
@@ -28,8 +29,8 @@ for handler in logging.getLogger().handlers:  # setting format for all handlers
 def main():
     tornado.options.parse_command_line()
     handlers = [
-        (r"/api/v1/data", MainHandler),
         (r"/api/v1/history", HistoryHandler),
+        (r"/api/v1/countries", CountryListHandler),
     ]
     settings = dict(
         autoescape=None,  # tornado 2.1 backward compatibility

@@ -68,6 +68,7 @@ class CountryListHandler(tornado.web.RequestHandler):
 class CountryStatHandler(tornado.web.RequestHandler):
 
     api = Covid(source="worldometers")
+    country_map = {'us': 'usa'}
 
     def set_default_headers(self):
         print("setting headers!!!")
@@ -78,6 +79,8 @@ class CountryStatHandler(tornado.web.RequestHandler):
 
     def get(self):
         country = self.get_argument('country', 'india');
+        if country in self.country_map.keys():
+            country = self.country_map[country]
         logging.info("recieved request for get stat, country-{}".format(country))
         data = self.api.get_status_by_country_name(country)
         for key in data:

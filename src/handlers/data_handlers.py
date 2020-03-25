@@ -11,11 +11,14 @@
 # 
 
 import json
+from numbers import Number
 import logging
 import tornado.web
 import covid
 import json
 from covid.api import CovId19Data
+from covid import Covid
+from decimal import *
 
 
 class HistoryHandler(tornado.web.RequestHandler):
@@ -63,3 +66,30 @@ class CountryListHandler(tornado.web.RequestHandler):
         self.set_status(204)
         self.finish()
 
+
+
+class CountryStatHandler(tornado.web.RequestHandler):
+
+    api = Covid(source="worldometers")
+
+    def set_default_headers(self):
+        print("setting headers!!!")
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "x-requested-with")
+        self.set_header('Access-Control-Allow-Methods', "GET, OPTIONS")
+        self.set_header("Access-Control-Allow-Headers", "access-control-allow-origin,authorization,content-type") 
+
+    def get(self):
+        country = self.get_argument('country', 'india');
+        logging.info("recieved request for get stat, country-{}".format(country))
+        data = self.api.get_status_by_country_name(country)
+        for key in data:
+            if isinstance(data[key], Number):
+                data[key] = str(eval(str(data[key])))
+        self.set_default_headers()
+        self.write(json.dumps(data))
+        
+    def options(self):
+        # no body
+        self.set_status(204)
+        self.finish()

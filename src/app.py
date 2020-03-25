@@ -7,7 +7,7 @@ import os
 from handlers.main_handler import MainHandler
 from handlers.data_handlers import HistoryHandler
 from handlers.data_handlers import CountryListHandler
-
+from handlers.data_handlers import CountryStatHandler
 
 
 define('port', default=9999, help='run on the given port', type=int)
@@ -31,6 +31,7 @@ def main():
     handlers = [
         (r"/api/v1/history", HistoryHandler),
         (r"/api/v1/countries", CountryListHandler),
+        (r"/api/v1/stat", CountryStatHandler),
     ]
     settings = dict(
         autoescape=None,  # tornado 2.1 backward compatibility

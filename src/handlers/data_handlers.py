@@ -14,11 +14,9 @@ import json
 from numbers import Number
 import logging
 import tornado.web
-import json
 from covid.api import CovId19Data
 from decimal import *
 from covid import Covid
-
 
 class HistoryHandler(tornado.web.RequestHandler):
 

@@ -24,10 +24,9 @@ steps:
     pip install -r requirements.txt
   displayName: 'Install dependencies'
 
-# disabling the test case now
-#- script: |
-#    pip install pytest pytest-azurepipelines
-#    pytest
-#  displayName: 'pytest'
-
-- task: PublishBuildArtifacts@1
+  task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.Repository.LocalPath)/'
+    ArtifactName: 'corona-stat-$(Build.BuildId)'
+    displayName: "Publish Corona Stat"
+    publishLocation: Container
